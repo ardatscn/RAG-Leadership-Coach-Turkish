@@ -25,8 +25,7 @@ text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
 # Directory where transcripts of the YouTube contents are held
 scripts_dir = "https://api.github.com/ardatscn/RAG-Leadership-Coach-Turkish/tree/main/video_scripts"
 
-headers = {"Authorization": "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"}
-response = requests.get(scripts_dir, headers=headers)
+response = requests.get(scripts_dir, auth=("ardatscn", "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"))
 
 # Print response for debugging
 print("Response Status Code:", response.status_code)

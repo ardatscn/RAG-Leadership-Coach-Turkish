@@ -104,14 +104,7 @@ query = st.text_input("📝 Sorunuzu yazın:", placeholder="Örnek: Arda Nehri n
 if st.button("🚀 Yanıt Al"):
     if query:
         with st.spinner("Yanıt oluşturuluyor..."):
-            result = query_rag(query)
-
-            # ✅ Display Answer
-            st.success(result["answer"])
-
-            # ✅ Display References
-            if result["references"]:
-                st.write("📚 **Kaynaklar:**")
-                for ref in result["references"]:
-                    st.markdown(f"- [{ref}]({ref})" if ref.startswith("http") else f"- {ref}")
+            answer, references = query_rag(query)
+            st.success(answer)
+            st.success(references)
 

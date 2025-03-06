@@ -9,6 +9,7 @@ from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.tools import DuckDuckGoSearchResults
 from elevenlabs.client import ElevenLabs
+import requests
 
 
 st.title("Hello World")
@@ -22,15 +23,19 @@ embeddings =  GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
 
 # Directory where transcripts of the YouTube contents are held
-scripts_dir = "https://raw.githubusercontent.com/ardatscn/RAG-Leadership-Coach-Turkish/refs/heads/main/video_scripts"
+scripts_dir = "https://github.com/ardatscn/RAG-Leadership-Coach-Turkish/tree/main/video_scripts"
 
 all_texts = []
-for fname in os.listdir(scripts_dir):
-  file_path = os.path.join(folder_path, filename)
-  with open(file_path, "r", encoding="utf-8") as file:
-    text = file.read()
-    splitted_text = text_splitter.split_text(text)
-    all_texts.extend([(chunk, fname) for text in splitted_text])
+response = requests.get(scripts_dir)
+files = response.json() 
+for file in files:
+  raw_url = file["download_url"]  # Get the raw URL of the file
+  
+  # Read the content of the file
+  file_response = requests.get(raw_url)
+  file_content = file_response.text  # Convert response to text
+  splitted_text = text_splitter.split_text(text)
+  all_texts.extend([(chunk, fname) for text in splitted_text])
     
 txts, sources = zip(*all_texts)
 

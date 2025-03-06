@@ -1,0 +1,8 @@
+langchain
+ctransformers
+sentence-transformers
+langchain-google-genai
+faiss-cpu==1.8.0
+langchain-community==0.2.5
+elevenlabs
+streamlit

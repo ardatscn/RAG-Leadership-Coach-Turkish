@@ -36,7 +36,7 @@ for file in files:
   file_response = requests.get(raw_url)
   file_content = file_response.text  # Convert response to text
   splitted_text = text_splitter.split_text(file_content)
-  all_texts.extend([(chunk, fname) for text in splitted_text])
+  all_texts.extend([(text, fname) for text in splitted_text])
     
 txts, sources = zip(*all_texts)
 

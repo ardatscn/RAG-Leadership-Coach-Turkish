@@ -22,7 +22,7 @@ embeddings =  GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
 
 # Directory where transcripts of the YouTube contents are held
-scripts_dir = "https://raw.githubusercontent.com/ardatscn/RAG-Leadership-Coach-Turkish/refs/heads/main/video_scripts/"
+scripts_dir = "https://raw.githubusercontent.com/ardatscn/RAG-Leadership-Coach-Turkish/refs/heads/main/video_scripts"
 
 all_texts = []
 for fname in os.listdir(scripts_dir):

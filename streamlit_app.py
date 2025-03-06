@@ -12,8 +12,6 @@ from elevenlabs.client import ElevenLabs
 import requests
 
 
-st.title("Hello World")
-
 google_api_key = st.secrets.get("GOOGLE_API_KEY")
 elevenlabs_api_key = st.secrets.get("ELEVENLABS_API_KEY")
 

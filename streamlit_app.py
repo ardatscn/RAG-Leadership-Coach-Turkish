@@ -23,7 +23,7 @@ embeddings =  GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
 
 # Directory where transcripts of the YouTube contents are held
-scripts_dir = "https://api.github.com/ardatscn/RAG-Leadership-Coach-Turkish/tree/main/video_scripts"
+scripts_dir = "https://api.github.com/repos/ardatscn/RAG-Leadership-Coach-Turkish/contents/video_scripts"
 
 response = requests.get(scripts_dir, auth=("ardatscn", "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"))
 

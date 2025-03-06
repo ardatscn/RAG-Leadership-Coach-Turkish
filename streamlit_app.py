@@ -27,10 +27,6 @@ scripts_dir = "https://api.github.com/repos/ardatscn/RAG-Leadership-Coach-Turkis
 
 response = requests.get(scripts_dir, auth=("ardatscn", "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"))
 
-# Print response for debugging
-print("Response Status Code:", response.status_code)
-print("Response Text:", response.text)  # This will show if it's an error message
-
 all_texts = []
 files = response.json() 
 for file in files:
@@ -39,7 +35,7 @@ for file in files:
   # Read the content of the file
   file_response = requests.get(raw_url)
   file_content = file_response.text  # Convert response to text
-  splitted_text = text_splitter.split_text(text)
+  splitted_text = text_splitter.split_text(file_content)
   all_texts.extend([(chunk, fname) for text in splitted_text])
     
 txts, sources = zip(*all_texts)

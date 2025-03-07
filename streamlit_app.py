@@ -10,13 +10,18 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.tools import DuckDuckGoSearchResults
 from elevenlabs.client import ElevenLabs
 import requests
+from sentence_transformers import SentenceTransformer
+
+# 1. Load the paraphrase-multilingual-mpnet-base-v2 model
+model_name = "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
+embeddings = SentenceTransformer(model_name)
 
 
 google_api_key = st.secrets.get("GOOGLE_API_KEY")
 elevenlabs_api_key = st.secrets.get("ELEVENLABS_API_KEY")
 
-os.environ["GOOGLE_API_KEY"] = google_api_key
-embeddings =  GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
+# os.environ["GOOGLE_API_KEY"] = google_api_key
+# embeddings =  GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
 
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
 

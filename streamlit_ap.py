@@ -11,6 +11,7 @@ from langchain_community.tools import DuckDuckGoSearchResults
 from elevenlabs.client import ElevenLabs
 import requests
 
+st.set_page_config(page_title="RAG Chatbot", page_icon="🤖", layout="centered")
 
 google_api_key = st.secrets.get("GOOGLE_API_KEY")
 elevenlabs_api_key = st.secrets.get("ELEVENLABS_API_KEY")
@@ -105,7 +106,7 @@ def query_rag(query):
     else:
         return response, []
 
-st.set_page_config(page_title="RAG Chatbot", page_icon="🤖", layout="centered")
+
 
 st.title("💬 RAG Chatbot with ElevenLabs TTS 🎙️")
 st.write("**Sorularınızı sorun, yanıtlar hem metin hem de sesli olarak sağlansın!**")

@@ -30,7 +30,7 @@ files = response.json()
 a = 0
 for file in files:
   a += 1
-  if a < 10:
+  if a < 15:
     fname = file['name']
     raw_url = file["download_url"]  # Get the raw URL of the file
     

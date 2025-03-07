@@ -95,9 +95,6 @@ def query_rag(query):
     else:
         return response, []
 
-query = "En iyi lider kimdir?"
-final_answer, references = query_rag(query)
-
 st.set_page_config(page_title="RAG Chatbot", page_icon="🤖", layout="centered")
 
 st.title("💬 RAG Chatbot with ElevenLabs TTS 🎙️")

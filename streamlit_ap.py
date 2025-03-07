@@ -16,8 +16,8 @@ google_api_key = st.secrets.get("GOOGLE_API_KEY")
 elevenlabs_api_key = st.secrets.get("ELEVENLABS_API_KEY")
 
 os.environ["GOOGLE_API_KEY"] = google_api_key
-embeddings =  GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
 print('za')
+embeddings =  GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
 
 # Directory where transcripts of the YouTube contents are held

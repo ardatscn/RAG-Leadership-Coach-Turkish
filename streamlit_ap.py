@@ -28,6 +28,7 @@ response = requests.get(scripts_dir, auth=("ardatscn", "ghp_b8H9fuIG17OrH9M9qgeQ
 all_texts = []
 files = response.json() 
 for file in files:
+  print(file)
   if file == "Aclan Acar.txt":
     fname = file['name']
     raw_url = file["download_url"]  # Get the raw URL of the file

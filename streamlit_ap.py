@@ -46,7 +46,13 @@ for file in files:
     
 txts, sources = zip(*all_texts)
 
-vector_store = FAISS.from_texts(txts, embeddings, metadatas=[{"source": src} for src in sources])
+@st.cache_resource
+def load_vectors():
+    vector_store = FAISS.from_texts(txts, embeddings, metadatas=[{"source": src} for src in sources])
+    return vector_store
+
+vector_store = load_vectors()
+
 llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash",  temperature=0)
 
 retriever = vector_store.as_retriever(search_type="similarity", search_kwargs={"k": 5})

@@ -17,7 +17,7 @@ elevenlabs_api_key = st.secrets.get("ELEVENLABS_API_KEY")
 
 os.environ["GOOGLE_API_KEY"] = google_api_key
 embeddings =  GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
-
+print('za')
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
 
 # Directory where transcripts of the YouTube contents are held
@@ -29,16 +29,14 @@ all_texts = []
 files = response.json() 
 a = 0
 for file in files:
-  a += 1
-  if a < 15:
-    fname = file['name']
-    raw_url = file["download_url"]  # Get the raw URL of the file
-    
-    # Read the content of the file
-    file_response = requests.get(raw_url)
-    file_content = file_response.text  # Convert response to text
-    splitted_text = text_splitter.split_text(file_content)
-    all_texts.extend([(text, fname) for text in splitted_text])
+  fname = file['name']
+  raw_url = file["download_url"]  # Get the raw URL of the file
+  
+  # Read the content of the file
+  file_response = requests.get(raw_url)
+  file_content = file_response.text  # Convert response to text
+  splitted_text = text_splitter.split_text(file_content)
+  all_texts.extend([(text, fname) for text in splitted_text])
     
 txts, sources = zip(*all_texts)
 

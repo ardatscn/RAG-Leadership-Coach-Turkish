@@ -16,7 +16,7 @@ google_api_key = st.secrets.get("GOOGLE_API_KEY")
 elevenlabs_api_key = st.secrets.get("ELEVENLABS_API_KEY")
 
 os.environ["GOOGLE_API_KEY"] = google_api_key
-embeddings =  GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
+embeddings =  GoogleGenerativeAIEmbeddings(model="models/text-embedding-005")
 
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
 

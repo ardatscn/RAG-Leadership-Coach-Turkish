@@ -16,9 +16,15 @@ google_api_key = st.secrets.get("GOOGLE_API_KEY")
 elevenlabs_api_key = st.secrets.get("ELEVENLABS_API_KEY")
 
 os.environ["GOOGLE_API_KEY"] = google_api_key
-print('za')
-embeddings =  GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=50)
+
+@st.cache_resource
+def load_embeddings():
+    return GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
+
+embeddings = load_embeddings()  # Cached and will not reload on button click
+
+# embeddings =  GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
 
 # Directory where transcripts of the YouTube contents are held
 scripts_dir = "https://api.github.com/repos/ardatscn/RAG-Leadership-Coach-Turkish/contents/video_scripts"

@@ -79,15 +79,15 @@ def search_online(query):
             elif text.startswith("link:"):
                 link_text += text.replace("link:", "").strip() + "\n"  # Add newline
 
-# Remove extra spaces at the end of snippet_text
-snippet_text = snippet_text.strip()
-
-# Print results
-print("Concatenated Snippet Text:")
-print(snippet_text)
-
-print("\nLinks as a String with Newlines:")
-print(link_text)
+    # Remove extra spaces at the end of snippet_text
+    snippet_text = snippet_text.strip()
+    
+    # Print results
+    print("Concatenated Snippet Text:")
+    print(snippet_text)
+    
+    print("\nLinks as a String with Newlines:")
+    print(link_text)
     
     return snippet_text, link_text
 

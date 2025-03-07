@@ -24,7 +24,7 @@ def load_embeddings():
 embeddings = load_embeddings()  # Cached and will not reload on button click
 
 # embeddings =  GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1500, chunk_overlap=50)
 
 # Directory where transcripts of the YouTube contents are held
 scripts_dir = "https://api.github.com/repos/ardatscn/RAG-Leadership-Coach-Turkish/contents/video_scripts"

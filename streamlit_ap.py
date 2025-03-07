@@ -28,14 +28,15 @@ response = requests.get(scripts_dir, auth=("ardatscn", "ghp_b8H9fuIG17OrH9M9qgeQ
 all_texts = []
 files = response.json() 
 for file in files:
-  fname = file['name']
-  raw_url = file["download_url"]  # Get the raw URL of the file
-  
-  # Read the content of the file
-  file_response = requests.get(raw_url)
-  file_content = file_response.text  # Convert response to text
-  splitted_text = text_splitter.split_text(file_content)
-  all_texts.extend([(text, fname) for text in splitted_text])
+  if file == "Aclan Acar.txt"
+    fname = file['name']
+    raw_url = file["download_url"]  # Get the raw URL of the file
+    
+    # Read the content of the file
+    file_response = requests.get(raw_url)
+    file_content = file_response.text  # Convert response to text
+    splitted_text = text_splitter.split_text(file_content)
+    all_texts.extend([(text, fname) for text in splitted_text])
     
 txts, sources = zip(*all_texts)
 

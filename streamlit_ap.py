@@ -17,6 +17,7 @@ st.set_page_config(page_title="RAG Chatbot", page_icon="🤖", layout="centered"
 
 google_api_key = st.secrets.get("GOOGLE_API_KEY")
 elevenlabs_api_key = st.secrets.get("ELEVENLABS_API_KEY")
+serp_api_key = st.secrets.get("SERPAPI_KEY")
 
 os.environ["GOOGLE_API_KEY"] = google_api_key
 
@@ -26,12 +27,10 @@ def load_embeddings():
 
 embeddings = load_embeddings()  # Cached and will not reload on button click
 
-# embeddings =  GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
 
-# Directory where transcripts of the YouTube contents are held
+#Directory
 scripts_dir = "https://api.github.com/repos/ardatscn/RAG-Leadership-Coach-Turkish/contents/video_scripts"
-
 response = requests.get(scripts_dir, auth=("ardatscn", "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"))
 
 all_texts = []
@@ -55,20 +54,19 @@ def load_vectors():
     return vector_store
 
 vector_store = load_vectors()
-
 llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash",  temperature=0)
 
 retriever = vector_store.as_retriever(search_type="similarity", search_kwargs={"k": 5})
 
 system_prompt = (
-    "Aşağıdaki bağlamları kullanarak soruyu yanıtlayın. "
-    "Sağlanan bağlamdan en ayrıntılı şekilde soruyu yanıtlayın. "
-    "Cevap sağlanan bağlamda yoksa, Üzgünüm cevabı bulamadım... demelisiniz. "
+    "Soruyu yanıtlamak için aşağıdaki talimatları kullanın. "
     "Yanıt Türkçe olmalıdır."
+    "Cevap sağlanan bağlamda yoksa, Üzgünüm cevap bulunamadı.. yanıtını verin. "
     "Referans aldığın kaynağı cevabında belirtmelisin."
-    "Bir koçmuş gibi konuş."
+    "Bir koçmuş ve tavsiye veriyormuş gibi konuş."
     "Context: {context}"
 )
+
 prompt = ChatPromptTemplate.from_messages(
     [
         ("system", system_prompt),
@@ -84,7 +82,7 @@ def search_online(query):
         "q": query,
         "hl": "tr",
         "gl": "tr",
-        "api_key": "a049dde42e651a48d15413e5e8a8dea021e8eccd5c25f80c4a25eab5f31dd097"  # Replace with your key
+        "api_key": serp_api_key
     }
 
     search = GoogleSearch(params)
@@ -101,26 +99,25 @@ def query_rag(query):
     response = chain.invoke({"input": query})
     answer = response["answer"]
     references = {doc.metadata["source"].replace(".txt", "") for doc in response["context"]}
-    
-    # Check if the answer contains "Üzgünüm, cevabı bulamadım..."
-    if "Üzgünüm, cevabı bulamadım" in answer:
-        st.subheader("📡 Eksik Veri! İşte İnternette Bulunan Sonuçlar:")
+
+    if "Üzgünüm cevap bulunamadı" in answer:
+        st.subheader("Eksik Veri! İşte İnternette Bulunan Sonuçlar:")
         result = search_online_cached(query)
         for title, link, snippet in result:
-            st.markdown(f"🔗 **[{title}]({link})**")
-            st.write(f"📜 {snippet}")
+            st.markdown(f"**[{title}]({link})**")
+            st.write(f"{snippet}")
             
     else:
         st.success(answer)
         st.success(references)
 
-
 st.title("Leadership Coach")
+st.write("Sorularınız "Tecrübe Konuşuyor" YouTube Oynatım Listesinden Yanıtlanır.")
 query = st.text_input("Sorunuzu Sorun:", placeholder="Örnek: Liderlerin ortak özellikleri nelerdir?")
 
-if st.button("🚀 Yanıt Al"):
+if st.button("Cevap Al"):
     if query:
-        with st.spinner("Yanıt oluşturuluyor..."):
+        with st.spinner("Cevap Bekleniyor.."):
             query_rag(query)
             # st.success(answer)
             # st.success(references)

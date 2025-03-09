@@ -101,26 +101,22 @@ def search_online(query):
 
 def query_rag(query):
     response = chain.invoke({"input": query})
+    answer = response["answer"]
+    references = {doc.metadata["source"].replace(".txt", "") for doc in response["context"]}
 
-    if isinstance(response, dict) and "answer" in response:
-        answer = response["answer"]
-        references = {doc.metadata["source"].replace(".txt", "") for doc in response["context"]}
-
-        # Check if the answer contains "Üzgünüm, cevabı bulamadım..."
-        if "Üzgünüm, cevabı bulamadım" in answer:
-            print("\n📡 Bilgi eksik! Web'den ek kaynaklar aranıyor...\n")
-            web_results, references = search_online(query)
-            print(web_results)
-            print(references)
-            return web_results, references
-        else:
-          print("\n📜 Nihai Yanıt:\n", answer)
-          print("\n References:")
-          for ref in sorted(references):  # Convert set to sorted list for readability
-            print(f"- {ref}")
-          return answer, references
+    # Check if the answer contains "Üzgünüm, cevabı bulamadım..."
+    if "Üzgünüm, cevabı bulamadım" in answer:
+        print("\n📡 Bilgi eksik! Web'den ek kaynaklar aranıyor...\n")
+        web_results, references = search_online(query)
+        print(web_results)
+        print(references)
+        return web_results, references
     else:
-        return response, []
+      print("\n📜 Nihai Yanıt:\n", answer)
+      print("\n References:")
+      for ref in sorted(references):  # Convert set to sorted list for readability
+        print(f"- {ref}")
+      return answer, references
 
 
 

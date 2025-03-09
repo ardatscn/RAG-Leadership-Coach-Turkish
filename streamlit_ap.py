@@ -120,6 +120,8 @@ def sound_on(audio_data):    # Plays the generated sound
     </audio>
     """
 
+    st.markdown(md, unsafe_allow_html=True)
+    
 def RAG(query):
     response = chain.invoke({"input": query})
     answer = response["answer"]

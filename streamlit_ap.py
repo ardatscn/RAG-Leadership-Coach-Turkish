@@ -111,17 +111,13 @@ def query_rag(query):
         print("\n📡 Bilgi eksik! Web'den ek kaynaklar aranıyor...\n")
 
         result = search_online_cached(query)
-        st.write("Debugging Output:", result)  # Streamlit Debug
-        print("Debugging Output:", result)  # Console Debug
-        print(web_results)
-        print(references)
-        return web_results, references
+        # st.write("Debugging Output:", result)  # Streamlit Debug
+        for title, link in results:
+            st.markdown(f"🔗 **[{title}]({link})**")
+            
     else:
-      print("\n📜 Nihai Yanıt:\n", answer)
-      print("\n References:")
-      for ref in sorted(references):  # Convert set to sorted list for readability
-        print(f"- {ref}")
-      return answer, references
+        st.success(answer)
+        st.success(references)
 
 
 
@@ -132,7 +128,7 @@ query = st.text_input("📝 Sorunuzu yazın:", placeholder="Örnek: Arda Nehri n
 if st.button("🚀 Yanıt Al"):
     if query:
         with st.spinner("Yanıt oluşturuluyor..."):
-            answer, references = query_rag(query)
-            st.success(answer)
-            st.success(references)
+            query_rag(query)
+            # st.success(answer)
+            # st.success(references)
 

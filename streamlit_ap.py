@@ -134,6 +134,7 @@ def query_rag(query):
         for title, link, snippet in result:
             st.markdown(f"**[{title}]({link})**")
             st.write(f"{snippet}")
+        return result
 
     else:
         st.success(answer)
@@ -148,7 +149,7 @@ query = st.text_input("Sorunuzu Sorun:", placeholder="Örnek: Liderlerin ortak �
 if st.button("Cevap Al"):
     if query:
         with st.spinner("Cevap Bekleniyor.."):
-            query_rag(query)
+            answer = query_rag(query)
             with st.spinner("🔊 Generating speech..."):
                 audio_data = generate_voice(answer)
                 play_audio(audio_data)

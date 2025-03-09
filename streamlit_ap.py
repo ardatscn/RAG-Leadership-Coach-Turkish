@@ -101,6 +101,7 @@ def search_online(query):
         return results if results else "No results found."
 
     except requests.RequestException as e:
+        return f"Error fetching results: {e}"
 
 def query_rag(query):
     response = chain.invoke({"input": query})

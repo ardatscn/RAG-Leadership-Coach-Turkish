@@ -11,8 +11,8 @@ from elevenlabs.client import ElevenLabs
 from serpapi import GoogleSearch
 import requests
 import time
-from elevenlabs import Client
 import base64
+import io
 
 st.set_page_config(page_title="RAG Chatbot", page_icon="🤖", layout="centered")
 
@@ -98,13 +98,22 @@ def search_online_cached(query):
 
 client = Client(api_key=elevenlabs_api_key)
 
-# Function to generate voice
 def generate_voice(text):
-    audio = client.generate(text=text, voice="Bella", model="eleven_multilingual_v2")
-    return audio
+    """Generates speech from text using ElevenLabs API and returns audio bytes."""
+    audio_stream = client.text_to_speech.convert_as_stream(
+        text=text,
+        voice_id="JBFqnCBsd6RMkjVDRZzb",
+        model_id="eleven_multilingual_v2"
+    )
+    
+    # ✅ Convert Generator to Bytes (Avoid Writing to Disk)
+    audio_bytes = b"".join(audio_stream)
 
-# Function to play audio in Streamlit
+    return audio_bytes
+
+# 🔹 Function to Play Audio in Streamlit
 def play_audio(audio_data):
+    """Embeds an audio player in Streamlit."""
     b64 = base64.b64encode(audio_data).decode()
     md = f"""
     <audio controls>
@@ -125,7 +134,7 @@ def query_rag(query):
         for title, link, snippet in result:
             st.markdown(f"**[{title}]({link})**")
             st.write(f"{snippet}")
-            
+
     else:
         st.success(answer)
         st.success(references)
@@ -134,19 +143,13 @@ st.title("Leadership Coach")
 st.write("Sorularınız 'Tecrübe Konuşuyor' YouTube Oynatım Listesinden Yanıtlanır.")
 query = st.text_input("Sorunuzu Sorun:", placeholder="Örnek: Liderlerin ortak özellikleri nelerdir?")
 
-if "voice_on" not in st.session_state:
-    st.session_state.voice_on = False
 
 if st.button("Cevap Al"):
     if query:
         with st.spinner("Cevap Bekleniyor.."):
             query_rag(query)
+            with st.spinner("🔊 Generating speech..."):
+                audio_data = generate_voice(final_answer)
+                play_audio(audio_data)
             
-if st.button("🎙️ Toggle Voice"):
-    st.session_state.voice_on = not st.session_state.voice_on
-    
-if st.session_state.voice_on:
-    st.subheader("🔊 Voice Output:")
-    audio_data = generate_voice(text)
-    play_audio(audio_data)
 

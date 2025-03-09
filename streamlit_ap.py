@@ -102,19 +102,20 @@ def search_online(query):
 def search_online_c(query):
     return search_online(query)
 
-def create_sound(text, lang="tr"):    # Generates the sound data
-    tts = gTTS(text=text, lang=lang, slow=False)
-    filename = "output.mp3"  # 🔹 Save file locally
-    tts.save(filename)
-    with open(filename, "rb") as f:
+def create_sound(text):    # Generates the sound data
+    speech_data = gTTS(text=text, lang="tr")
+    speech_data.save("speech_sound.mp3")
+    with open("speech_sound.mp3", "rb") as f:
         audio_bytes = f.read()
 
     return audio_bytes  
 
 def sound_on(audio_data):    # Plays the generated sound
     b64 = base64.b64encode(audio_data).decode()    # Needed for streanlit implementation 
+    autoplay = "autoplay"    # No clicking dialog
+
     md = f"""
-    <audio style="display:none;" "autoplay">
+    <audio style="display:none;" {autoplay}>
         <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
     </audio>
     """
@@ -152,7 +153,7 @@ if st.button("Cevap Al"):
         with st.spinner("Cevap Bekleniyor.."):
             answer = RAG(query)
             if answer and sound:
-                with st.spinner("🔊 Generating speech..."):
+                with st.spinner("Generating sound.."):
                     audio_data = create_sound(answer)
                     sound_on(audio_data)     # Sound on if checkbox
 

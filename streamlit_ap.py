@@ -152,8 +152,9 @@ def query_rag(query):
         for title, link, snippet in result:
             st.markdown(f"**[{title}]({link})**")
             st.write(f"{snippet}")
-            audio_data = generate_voice(snippet)
-            play_audio(audio_data, auto_play=sound)
+            if sound:
+                audio_data = generate_voice(snippet)
+                play_audio(audio_data, auto_play=sound)
     else:
         st.success(answer)
         st.success(references)
@@ -168,7 +169,7 @@ if st.button("Cevap Al"):
     if query:
         with st.spinner("Cevap Bekleniyor.."):
             answer = query_rag(query)
-            if answer and auto_play_enabled:
+            if answer and sound:
                 with st.spinner("🔊 Generating speech..."):
                     audio_data = generate_voice(answer)
                     play_audio(audio_data, auto_play=sound)

@@ -111,9 +111,10 @@ def query_rag(query):
     response = chain.invoke({"input": query})
     answer = response["answer"]
     references = {doc.metadata["source"].replace(".txt", "") for doc in response["context"]}
-
+    
     # Check if the answer contains "Üzgünüm, cevabı bulamadım..."
     if "Üzgünüm, cevabı bulamadım" in answer:
+        st.write("Here")
         print("\n📡 Bilgi eksik! Web'den ek kaynaklar aranıyor...\n")
         web_results, references = search_online_cached(query)
         print(web_results)

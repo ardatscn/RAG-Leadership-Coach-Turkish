@@ -101,6 +101,11 @@ def search_online(query):
     
     return snippet_text, link_text
 
+@st.cache_data
+def search_online_cached(query):
+    return search_online(query)
+
+
 def query_rag(query):
     response = chain.invoke({"input": query})
     answer = response["answer"]
@@ -109,9 +114,12 @@ def query_rag(query):
     # Check if the answer contains "Üzgünüm, cevabı bulamadım..."
     if "Üzgünüm, cevabı bulamadım" in answer:
         print("\n📡 Bilgi eksik! Web'den ek kaynaklar aranıyor...\n")
-        web_results, references = search_online(query)
+        web_results, references = search_online_cached(query)
         print(web_results)
         print(references)
+        st.write(f"🔍 **Results for:** {query}")
+        st.write(f"📜 **Snippets:** {snippet_text}")
+        st.write(f"🔗 **Links:**\n{link_text}")
         return web_results, references
     else:
       print("\n📜 Nihai Yanıt:\n", answer)

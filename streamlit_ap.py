@@ -135,7 +135,7 @@ def play_audio(audio_data, auto_play=False):
     autoplay_attr = "autoplay" if auto_play else ""
 
     md = f"""
-    <audio controls {autoplay_attr}>
+    <audio style="display:none;" {autoplay_attr}>
         <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
     </audio>
     """
@@ -168,7 +168,7 @@ if st.button("Cevap Al"):
     if query:
         with st.spinner("Cevap Bekleniyor.."):
             answer = query_rag(query)
-            if answer:
+            if answer and auto_play_enabled:
                 with st.spinner("🔊 Generating speech..."):
                     audio_data = generate_voice(answer)
                     play_audio(audio_data, auto_play=auto_play_enabled)

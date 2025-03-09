@@ -3,9 +3,9 @@ ctransformers
 sentence-transformers
 langchain-google-genai
 faiss-cpu==1.8.0
-langchain-community==0.2.5
+langchain-community==0.3.19
 elevenlabs
 streamlit
-duckduckgo_search==6.2.3
+duckduckgo_search==7.5.0
 beautifulsoup4
 

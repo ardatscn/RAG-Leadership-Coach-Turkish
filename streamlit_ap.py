@@ -104,7 +104,7 @@ def query_rag(query):
     
     # Check if the answer contains "Üzgünüm, cevabı bulamadım..."
     if "Üzgünüm, cevabı bulamadım" in answer:
-        st.subheader("📡 Bilgi eksik! Web'den ek kaynaklar aranıyor...")
+        st.subheader("📡 Eksik Veri! İşte İnternette Bulunan Sonuçlar:")
         result = search_online_cached(query)
         for title, link, snippet in result:
             st.markdown(f"🔗 **[{title}]({link})**")
@@ -115,9 +115,8 @@ def query_rag(query):
         st.success(references)
 
 
-st.title("💬 RAG Chatbot with ElevenLabs TTS 🎙️")
-st.write("**Sorularınızı sorun, yanıtlar hem metin hem de sesli olarak sağlansın!**")
-query = st.text_input("📝 Sorunuzu yazın:", placeholder="Örnek: Arda Nehri nerededir?")
+st.title("Leadership Coach")
+query = st.text_input("Sorunuzu Sorun:", placeholder="Örnek: Liderlerin ortak özellikleri nelerdir?")
 
 if st.button("🚀 Yanıt Al"):
     if query:

@@ -109,9 +109,10 @@ def query_rag(query):
     if "Üzgünüm, cevabı bulamadım" in answer:
         st.write("Here")
         print("\n📡 Bilgi eksik! Web'den ek kaynaklar aranıyor...\n")
-        results = search_google(query)
-        for title, link in results:
-            st.markdown(f"🔗 **[{title}]({link})**")
+
+        result = search_online_cached(query)
+        st.write("Debugging Output:", result)  # Streamlit Debug
+        print("Debugging Output:", result)  # Console Debug
         print(web_results)
         print(references)
         return web_results, references

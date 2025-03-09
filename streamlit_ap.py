@@ -79,25 +79,20 @@ chain = create_retrieval_chain(retriever, question_answer_chain)
 
 
 def search_online(query):
-    search = DuckDuckGoSearchResults(output_format="list", max_results = 5)
-    search_results = search.invoke(query)
-    print(search_results)
+    """Search DuckDuckGo with a user-agent header to avoid blocks."""
+    base_url = "https://duckduckgo.com/"
+    params = {"q": query, "t": "ffab", "ia": "web"}
     
-    snippet_text = ""  # For concatenated snippets
-    link_text = ""     # For newline-separated links
-    
-    # Process each inner list
-    for item in search_results:
-        for text in item:
-            if text.startswith("snippet:"):
-                snippet_text += text.replace("snippet:", "").strip() + " "  # Concatenate
-            elif text.startswith("link:"):
-                link_text += text.replace("link:", "").strip() + "\n"  # Add newline
+    headers = {"User-Agent": "my-app/0.0.1"}  # Prevents request blocking
 
-    # Remove extra spaces at the end of snippet_text
-    snippet_text = snippet_text.strip()
-    
-    return snippet_text, link_text
+    try:
+        response = requests.get(base_url, params=params, headers=headers)
+        response.raise_for_status()  # Raise error if status is not 200
+
+        return response.text  # Return HTML or process further if needed
+
+    except requests.RequestException as e:
+        return f"Error fetching results: {e}"
 
 def query_rag(query):
     response = chain.invoke({"input": query})
@@ -107,7 +102,8 @@ def query_rag(query):
     # Check if the answer contains "Üzgünüm, cevabı bulamadım..."
     if "Üzgünüm, cevabı bulamadım" in answer:
         print("\n📡 Bilgi eksik! Web'den ek kaynaklar aranıyor...\n")
-        web_results, references = search_online(query)
+        web_results = search_online(query)
+        references = "Referans"
         print(web_results)
         print(references)
         return web_results, references

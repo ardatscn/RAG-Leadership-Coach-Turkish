@@ -90,7 +90,7 @@ def search_online(query):
     snippet_text = ""  # For concatenated snippets
     link_text = ""     # For newline-separated links
 
-    for item in data:
+    for item in search_results:
         parts = item.split(", link: ")  # Split at ", link: " to separate snippet and link
         st.write("parts", parts)
         if len(parts) == 2:

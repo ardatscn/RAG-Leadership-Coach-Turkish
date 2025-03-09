@@ -112,7 +112,7 @@ def query_rag(query):
         st.success(references)
 
 st.title("Leadership Coach")
-st.write("Sorularınız "Tecrübe Konuşuyor" YouTube Oynatım Listesinden Yanıtlanır.")
+st.write("Sorularınız 'Tecrübe Konuşuyor' YouTube Oynatım Listesinden Yanıtlanır.")
 query = st.text_input("Sorunuzu Sorun:", placeholder="Örnek: Liderlerin ortak özellikleri nelerdir?")
 
 if st.button("Cevap Al"):

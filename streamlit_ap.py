@@ -153,7 +153,7 @@ def query_rag(query):
             st.markdown(f"**[{title}]({link})**")
             st.write(f"{snippet}")
             audio_data = generate_voice(snippet)
-            play_audio(audio_data)
+            play_audio(audio_data, auto_play=sound)
     else:
         st.success(answer)
         st.success(references)
@@ -163,7 +163,7 @@ st.title("Leadership Coach")
 st.write("Sorularınız 'Tecrübe Konuşuyor' YouTube Oynatım Listesinden Yanıtlanır.")
 query = st.text_input("Sorunuzu Sorun:", placeholder="Örnek: Liderlerin ortak özellikleri nelerdir?")
 
-auto_play_enabled = st.checkbox("Auto-play audio?", value=True)
+sound = st.checkbox("Sound", value=True)
 if st.button("Cevap Al"):
     if query:
         with st.spinner("Cevap Bekleniyor.."):
@@ -171,7 +171,7 @@ if st.button("Cevap Al"):
             if answer and auto_play_enabled:
                 with st.spinner("🔊 Generating speech..."):
                     audio_data = generate_voice(answer)
-                    play_audio(audio_data, auto_play=auto_play_enabled)
+                    play_audio(audio_data, auto_play=sound)
 
             
 

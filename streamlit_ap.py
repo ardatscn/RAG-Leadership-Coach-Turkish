@@ -11,7 +11,7 @@ from elevenlabs.client import ElevenLabs
 from serpapi import GoogleSearch
 import requests
 import time
-from elevenlabs import generate
+from elevenlabs import Client
 import base64
 
 st.set_page_config(page_title="RAG Chatbot", page_icon="🤖", layout="centered")
@@ -96,8 +96,11 @@ def search_online(query):
 def search_online_cached(query):
     return search_online(query)
 
+client = Client(api_key=elevenlabs_api_key)
+
+# Function to generate voice
 def generate_voice(text):
-    audio = generate(text=text, voice="Bella", model="eleven_multilingual_v2")
+    audio = client.generate(text=text, voice="Bella", model="eleven_multilingual_v2")
     return audio
 
 # Function to play audio in Streamlit

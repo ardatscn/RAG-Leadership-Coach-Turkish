@@ -78,12 +78,27 @@ prompt = ChatPromptTemplate.from_messages(
 question_answer_chain = create_stuff_documents_chain(llm, prompt)
 chain = create_retrieval_chain(retriever, question_answer_chain)
 
-
 def search_online(query):
-    search = DuckDuckGoSearchResults(output_format="list")
+    time.sleep(5)
+    search = DuckDuckGoSearchResults(output_format="list", max_results = 2)
     search_results = search.invoke(query)
     print(search_results)
-    return search_results[0]['snippet'], search_results[0]['link']
+    
+    snippet_text = ""  # For concatenated snippets
+    link_text = ""     # For newline-separated links
+    st.write(search_results)
+    # Process each inner list
+    for item in search_results:
+        for text in item:
+            if text.startswith("snippet:"):
+                snippet_text += text.replace("snippet:", "").strip() + " "  # Concatenate
+            elif text.startswith("link:"):
+                link_text += text.replace("link:", "").strip() + "\n"  # Add newline
+
+    # Remove extra spaces at the end of snippet_text
+    snippet_text = snippet_text.strip()
+    
+    return snippet_text, link_text
 
 @st.cache_data
 def search_online_cached(query):

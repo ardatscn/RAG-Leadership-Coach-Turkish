@@ -7,4 +7,4 @@ langchain-community==0.2.5
 elevenlabs
 streamlit
 duckduckgo_search==7.5.0
-beautifulsoup4
+google-search-results

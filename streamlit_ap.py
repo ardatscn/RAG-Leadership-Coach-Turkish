@@ -79,20 +79,28 @@ chain = create_retrieval_chain(retriever, question_answer_chain)
 
 
 def search_online(query):
-    """Search DuckDuckGo with a user-agent header to avoid blocks."""
-    base_url = "https://duckduckgo.com/"
-    params = {"q": query, "t": "ffab", "ia": "web"}
-    
-    headers = {"User-Agent": "my-app/0.0.1"}  # Prevents request blocking
+    """Search DuckDuckGo and extract search results."""
+    base_url = "https://html.duckduckgo.com/html/"  # Use the HTML version for easier parsing
+    params = {"q": query}
+
+    headers = {"User-Agent": "Mozilla/5.0"}  # Prevents request blocking
 
     try:
         response = requests.get(base_url, params=params, headers=headers)
-        response.raise_for_status()  # Raise error if status is not 200
+        response.raise_for_status()  # Raise an error for failed requests
 
-        return response.text  # Return HTML or process further if needed
+        soup = BeautifulSoup(response.text, "html.parser")
+
+        # Extract search result titles and links
+        results = []
+        for result in soup.find_all("a", class_="result__a"):  # DuckDuckGo's search result class
+            title = result.text
+            link = result["href"]
+            results.append((title, link))
+
+        return results if results else "No results found."
 
     except requests.RequestException as e:
-        return f"Error fetching results: {e}"
 
 def query_rag(query):
     response = chain.invoke({"input": query})

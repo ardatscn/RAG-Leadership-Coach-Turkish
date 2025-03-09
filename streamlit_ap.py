@@ -89,6 +89,7 @@ def search_online(query):
     st.write(search_results)
     # Process each inner list
     for item in search_results:
+        st.write(item)
         for text in item:
             if text.startswith("snippet:"):
                 snippet_text += text.replace("snippet:", "").strip() + " "  # Concatenate

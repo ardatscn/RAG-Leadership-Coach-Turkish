@@ -14,6 +14,8 @@ import time
 import base64
 import io
 from gtts import gTTS
+import pyttsx3
+
 
 st.set_page_config(page_title="RAG Chatbot", page_icon="🤖", layout="centered")
 
@@ -99,27 +101,12 @@ def search_online_cached(query):
 
 client = ElevenLabs(api_key=elevenlabs_api_key)
 
-def generate_voice(text, lang="tr"):
-    """Generates speech using Google Text-to-Speech (gTTS) and returns audio bytes."""
-    if not text.strip():
-        st.warning("⚠️ Text input is empty!")
-        return None
-
-    try:
-        tts = gTTS(text=text, lang=lang)  # Generate speech
-        audio_buffer = io.BytesIO()  # Create in-memory buffer
-        tts.save(audio_buffer)  # Save audio to buffer
-        audio_buffer.seek(0)  # Move to the start of the buffer
-        return audio_buffer.read()  # Read the entire buffer
-    except Exception as e:
-        st.error(f"⚠️ Error generating speech: {e}")
-        return None
-
-def play_audio(audio_data):
-    """Embeds an audio player in Streamlit."""
-    if not audio_data:
-        st.warning("⚠️ No audio generated.")
-        return
+def generate_voice(text):
+    engine = pyttsx3.init()
+    engine.save_to_file(text, "output.mp3")
+    engine.runAndWait()
+    with open("output.mp3", "rb") as f:
+        return f.read()
 
     # Convert audio to Base64 for embedding in Streamlit
     b64 = base64.b64encode(audio_data).decode()
@@ -160,9 +147,7 @@ if st.button("Cevap Al"):
             answer = query_rag(query)
             with st.spinner("🔊 Generating speech..."):
                 audio_data = generate_voice(answer)
-                if audio_data:
-                    play_audio(audio_data)
-                else:
-                    st.error("❌ Failed to generate audio.")
+                b64 = base64.b64encode(audio_data).decode()
+                st.markdown(f"<audio controls><source src='data:audio/mp3;base64,{b64}' type='audio/mp3'></audio>", unsafe_allow_html=True)
             
 

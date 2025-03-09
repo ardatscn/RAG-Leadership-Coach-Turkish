@@ -8,4 +8,4 @@ elevenlabs
 streamlit
 duckduckgo_search==7.5.0
 beautifulsoup4
-
+faiss-cpu

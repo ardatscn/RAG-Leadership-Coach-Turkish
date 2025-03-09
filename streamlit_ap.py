@@ -79,24 +79,18 @@ question_answer_chain = create_stuff_documents_chain(llm, prompt)
 chain = create_retrieval_chain(retriever, question_answer_chain)
 
 def search_online(query):
-    time.sleep(5)
-    search = DuckDuckGoSearchResults(output_format="list", max_results = 2)
-    search_results = search.invoke(query)
-    print(search_results)
-    
-    snippet_text = ""  # For concatenated snippets
-    link_text = ""     # For newline-separated links
-    st.write(search_results)
+    params = {
+        "q": query,
+        "hl": "en",
+        "gl": "us",
+        "api_key": "a049dde42e651a48d15413e5e8a8dea021e8eccd5c25f80c4a25eab5f31dd097"  # Replace with your key
+    }
 
-    # Extract all snippets and links using regex
-    snippets = re.findall(r"snippet:\s*([^,]+)", full_text)
-    links = re.findall(r"link:\s*([^,]+)", full_text)
+    search = GoogleSearch(params)
+    results = search.get_dict()
 
-    # Concatenate snippets and links
-    snippet_text = " ".join(snippets).strip()
-    link_text = "\n".join(links).strip()
-
-    return snippet_text, link_text
+    search_results = results.get("organic_results", [])
+    return [(res["title"], res["link"]) for res in search_results[:5]]
     
 @st.cache_data
 def search_online_cached(query):

@@ -82,7 +82,7 @@ chain = create_retrieval_chain(retriever, question_answer_chain)
 def search_online(query):
     params = {
         "q": query,
-        "hl": "en",
+        "hl": "tr",
         "gl": "us",
         "api_key": "a049dde42e651a48d15413e5e8a8dea021e8eccd5c25f80c4a25eab5f31dd097"  # Replace with your key
     }
@@ -92,13 +92,11 @@ def search_online(query):
 
     search_results = results.get("organic_results", [])
     st.write(search_results)
-    return [(res["title"], res["link"]) for res in search_results[:5]]
+    return [(res.get("title", "No Title"), res.get("link", "#"), res.get("snippet", "No Snippet")) for res in search_results[:5]]
     
 @st.cache_data
 def search_online_cached(query):
-    st.write("here 2")
     return search_online(query)
-
 
 def query_rag(query):
     response = chain.invoke({"input": query})
@@ -107,18 +105,17 @@ def query_rag(query):
     
     # Check if the answer contains "Üzgünüm, cevabı bulamadım..."
     if "Üzgünüm, cevabı bulamadım" in answer:
-        st.write("Here")
         print("\n📡 Bilgi eksik! Web'den ek kaynaklar aranıyor...\n")
 
         result = search_online_cached(query)
         # st.write("Debugging Output:", result)  # Streamlit Debug
-        for title, link in result:
+        for title, link, snippet in result:
             st.markdown(f"🔗 **[{title}]({link})**")
+            st.write(f"📜 {snippet}")
             
     else:
         st.success(answer)
         st.success(references)
-
 
 
 st.title("💬 RAG Chatbot with ElevenLabs TTS 🎙️")

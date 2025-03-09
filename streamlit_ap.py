@@ -7,22 +7,16 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
-from elevenlabs.client import ElevenLabs
 from serpapi import GoogleSearch
 import requests
 import time
 import base64
 import io
 from gtts import gTTS
-import pyttsx3
 
-
-st.set_page_config(page_title="RAG Chatbot", page_icon="🤖", layout="centered")
-
+st.set_page_config(page_title="RAG Chatbot", layout="centered")
 google_api_key = st.secrets.get("GOOGLE_API_KEY")
-elevenlabs_api_key = st.secrets.get("ELEVENLABS_API_KEY")
 serp_api_key = st.secrets.get("SERPAPI_KEY")
-
 os.environ["GOOGLE_API_KEY"] = google_api_key
 
 @st.cache_resource
@@ -99,35 +93,19 @@ def search_online(query):
 def search_online_cached(query):
     return search_online(query)
 
-client = ElevenLabs(api_key=elevenlabs_api_key)
-
 def generate_voice(text, lang="tr"):
     """Generates and saves speech using gTTS."""
-    if not text.strip():
-        st.warning("⚠️ Text input is empty!")
-        return None
+    tts = gTTS(text=text, lang=lang, slow=False)
+    filename = "output.mp3"  # 🔹 Save file locally
+    tts.save(filename)
 
-    try:
-        tts = gTTS(text=text, lang=lang, slow=False)
-        filename = "output.mp3"  # 🔹 Save file locally
-        tts.save(filename)
+    # ✅ Read the file and return its bytes
+    with open(filename, "rb") as f:
+        audio_bytes = f.read()
 
-        # ✅ Read the file and return its bytes
-        with open(filename, "rb") as f:
-            audio_bytes = f.read()
-
-        return audio_bytes  
-
-    except Exception as e:
-        st.error(f"❌ gTTS Error: {e}")
-        return None
+    return audio_bytes  
 
 def play_audio(audio_data, auto_play=False):
-    """Embeds an audio player in Streamlit with optional auto-play."""
-    if not audio_data:
-        st.warning("⚠️ No audio generated.")
-        return
-
     # Convert bytes to Base64 for embedding in Streamlit
     b64 = base64.b64encode(audio_data).decode()
     
@@ -149,12 +127,14 @@ def query_rag(query):
     if "Üzgünüm, cevap bulunamadı" in answer:
         st.subheader("Eksik Veri! İşte İnternette Bulunan Sonuçlar:")
         result = search_online_cached(query)
+        all_snippets = ""
         for title, link, snippet in result:
             st.markdown(f"**[{title}]({link})**")
             st.write(f"{snippet}")
-            if sound:
-                audio_data = generate_voice(snippet)
-                play_audio(audio_data, auto_play=sound)
+            all_snippets += snippet
+        if sound:
+            audio_data = generate_voice(all_snippets)
+            play_audio(audio_data, auto_play=sound)
     else:
         st.success(answer)
         st.success(references)

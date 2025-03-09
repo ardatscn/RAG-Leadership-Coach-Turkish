@@ -163,9 +163,8 @@ st.title("Leadership Coach")
 st.write("Sorularınız 'Tecrübe Konuşuyor' YouTube Oynatım Listesinden Yanıtlanır.")
 query = st.text_input("Sorunuzu Sorun:", placeholder="Örnek: Liderlerin ortak özellikleri nelerdir?")
 
-
+auto_play_enabled = st.checkbox("Auto-play audio?", value=True)
 if st.button("Cevap Al"):
-    auto_play_enabled = st.checkbox("Auto-play audio?", value=True)
     if query:
         with st.spinner("Cevap Bekleniyor.."):
             answer = query_rag(query)

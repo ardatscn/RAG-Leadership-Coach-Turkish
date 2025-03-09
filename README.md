@@ -3,6 +3,7 @@ In this project a Retrieval-Augmented Generation (RAG) model is created to gener
 The model was fed with the content gathered from the "Tecrübe Konuşuyor" playlist which is accessible from the link: https://www.youtube.com/playlist?list=PLCi3Q_-uGtdlCsFXHLDDHBSLyq4BkQ6gZ
 
 To briefly explain the key points and steps in this repo:
+
   1- The data was prepared from the given YouTube playlist by the Whisper library from OpenAI. The transcripts were generated from each video
 with high accuracy, enabling further processing such as text analysis and summarization.
 

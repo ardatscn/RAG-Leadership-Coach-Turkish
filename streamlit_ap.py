@@ -117,9 +117,6 @@ def query_rag(query):
         web_results, references = search_online_cached(query)
         print(web_results)
         print(references)
-        st.write(f"🔍 **Results for:** {query}")
-        st.write(f"📜 **Snippets:** {snippet_text}")
-        st.write(f"🔗 **Links:**\n{link_text}")
         return web_results, references
     else:
       print("\n📜 Nihai Yanıt:\n", answer)

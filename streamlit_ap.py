@@ -91,7 +91,6 @@ def search_online(query):
     results = search.get_dict()
 
     search_results = results.get("organic_results", [])
-    st.write(search_results)
     return [(res.get("title", "No Title"), res.get("link", "#"), res.get("snippet", "No Snippet")) for res in search_results[:5]]
     
 @st.cache_data
@@ -105,10 +104,8 @@ def query_rag(query):
     
     # Check if the answer contains "Üzgünüm, cevabı bulamadım..."
     if "Üzgünüm, cevabı bulamadım" in answer:
-        print("\n📡 Bilgi eksik! Web'den ek kaynaklar aranıyor...\n")
-
+        st.subheader("📡 Bilgi eksik! Web'den ek kaynaklar aranıyor...")
         result = search_online_cached(query)
-        # st.write("Debugging Output:", result)  # Streamlit Debug
         for title, link, snippet in result:
             st.markdown(f"🔗 **[{title}]({link})**")
             st.write(f"📜 {snippet}")

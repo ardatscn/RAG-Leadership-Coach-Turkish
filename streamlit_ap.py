@@ -92,8 +92,10 @@ def search_online(query):
 
     for item in data:
         parts = item.split(", link: ")  # Split at ", link: " to separate snippet and link
+        st.write("parts", parts)
         if len(parts) == 2:
             snippet = parts[0].replace("snippet:", "").strip()  # Extract snippet
+            st.write("snippet", snippet)
             link = parts[1].strip()  # Extract link
 
             snippet_text += snippet + " "  # Concatenate snippets

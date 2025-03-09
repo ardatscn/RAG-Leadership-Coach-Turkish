@@ -122,16 +122,20 @@ def generate_voice(text, lang="tr"):
         st.error(f"❌ gTTS Error: {e}")
         return None
 
-def play_audio(audio_data):
-    """Embeds an audio player in Streamlit."""
+def play_audio(audio_data, auto_play=False):
+    """Embeds an audio player in Streamlit with optional auto-play."""
     if not audio_data:
         st.warning("⚠️ No audio generated.")
         return
 
     # Convert bytes to Base64 for embedding in Streamlit
     b64 = base64.b64encode(audio_data).decode()
+    
+    # 🔹 Auto-play option
+    autoplay_attr = "autoplay" if auto_play else ""
+
     md = f"""
-    <audio controls>
+    <audio controls {autoplay_attr}>
         <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
     </audio>
     """
@@ -161,13 +165,14 @@ query = st.text_input("Sorunuzu Sorun:", placeholder="Örnek: Liderlerin ortak �
 
 
 if st.button("Cevap Al"):
+    auto_play_enabled = st.checkbox("Auto-play audio?", value=True)
     if query:
         with st.spinner("Cevap Bekleniyor.."):
             answer = query_rag(query)
             if answer:
                 with st.spinner("🔊 Generating speech..."):
                     audio_data = generate_voice(answer)
-                    play_audio(audio_data)
+                    play_audio(audio_data, auto_play=auto_play_enabled)
 
             
 

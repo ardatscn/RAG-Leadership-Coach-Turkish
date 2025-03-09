@@ -10,6 +10,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.tools import DuckDuckGoSearchResults
 from elevenlabs.client import ElevenLabs
 import requests
+from bs4 import BeautifulSoup
 
 st.set_page_config(page_title="RAG Chatbot", page_icon="🤖", layout="centered")
 

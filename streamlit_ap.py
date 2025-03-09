@@ -10,7 +10,7 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.tools import DuckDuckGoSearchResults
 from elevenlabs.client import ElevenLabs
 import requests
-from bs4 import BeautifulSoup
+import time
 
 st.set_page_config(page_title="RAG Chatbot", page_icon="🤖", layout="centered")
 
@@ -80,6 +80,7 @@ chain = create_retrieval_chain(retriever, question_answer_chain)
 
 
 def search_online(query):
+    time.sleep(5)
     search = DuckDuckGoSearchResults(output_format="list", max_results = 5)
     search_results = search.invoke(query)
     print(search_results)

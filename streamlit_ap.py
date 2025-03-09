@@ -105,8 +105,8 @@ def search_online_c(query):
 def create_sound(text):    # Generates the sound data
     speech_data = gTTS(text=text, lang="tr")
     speech_data.save("speech_sound.mp3")
-    with open("speech_sound.mp3", "rb") as f:
-        audio_bytes = f.read()
+    with open("speech_sound.mp3", "rb") as file:
+        audio_bytes = file.read()
 
     return audio_bytes  
 

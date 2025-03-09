@@ -135,7 +135,7 @@ def RAG(query):
             all_snippets += snippet
         if sound:    # Sound on if checkbox
             audio_data = create_sound(all_snippets)
-            sound_on(audio_data, auto_play=sound)
+            sound_on(audio_data)
     else:
         st.success(answer)
         st.success(references)
@@ -153,7 +153,7 @@ if st.button("Cevap Al"):
             if answer and sound:
                 with st.spinner("🔊 Generating speech..."):
                     audio_data = create_sound(answer)
-                    sound_on(audio_data, auto_play=sound)     # Sound on if checkbox
+                    sound_on(audio_data)     # Sound on if checkbox
 
             
 

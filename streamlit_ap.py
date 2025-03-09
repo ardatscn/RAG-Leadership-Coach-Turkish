@@ -83,7 +83,7 @@ def search_online(query):
     params = {
         "q": query,
         "hl": "tr",
-        "gl": "us",
+        "gl": "tr",
         "api_key": "a049dde42e651a48d15413e5e8a8dea021e8eccd5c25f80c4a25eab5f31dd097"  # Replace with your key
     }
 

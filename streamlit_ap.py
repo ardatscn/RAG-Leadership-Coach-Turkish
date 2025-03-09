@@ -84,6 +84,7 @@ def search_online(query):
     search = DuckDuckGoSearchResults(output_format="list", max_results = 5)
     search_results = search.invoke(query)
     st.write("Here 3")
+    st.write(search_results)
     print(search_results)
     
     snippet_text = ""  # For concatenated snippets

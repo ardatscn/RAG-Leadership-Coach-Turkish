@@ -80,30 +80,10 @@ chain = create_retrieval_chain(retriever, question_answer_chain)
 
 
 def search_online(query):
-    time.sleep(5)
-    search = DuckDuckGoSearchResults(output_format="list", max_results = 5)
+    search = DuckDuckGoSearchResults(output_format="list")
     search_results = search.invoke(query)
-    st.write("Here 3")
-    st.write(search_results)
     print(search_results)
-    
-    snippet_text = ""  # For concatenated snippets
-    link_text = ""     # For newline-separated links
-
-    for item in search_results:
-        parts = item.split(", link: ")  # Split at ", link: " to separate snippet and link
-        st.write("item", item)
-        if len(parts) == 2:
-            snippet = parts[0].replace("snippet:", "").strip()  # Extract snippet
-            st.write("snippet", snippet)
-            link = parts[1].strip()  # Extract link
-
-            snippet_text += snippet + " "  # Concatenate snippets
-            link_text += link + "\n"  # Newline-separated links
-
-    snippet_text = snippet_text.strip()  # Remove extra spaces
-    
-    return snippet_text, link_text
+    return search_results[0]['snippet'], search_results[0]['link']
 
 @st.cache_data
 def search_online_cached(query):

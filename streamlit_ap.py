@@ -77,6 +77,8 @@ prompt = ChatPromptTemplate.from_messages(
 question_answer_chain = create_stuff_documents_chain(llm, prompt)
 chain = create_retrieval_chain(retriever, question_answer_chain)
 
+
+@st.cache_resource
 def search_online(query):
     search = DuckDuckGoSearchResults(output_format="list", max_results = 5)
     search_results = search.invoke(query)

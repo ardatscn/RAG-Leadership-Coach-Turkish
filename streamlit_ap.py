@@ -100,15 +100,17 @@ def search_online_cached(query):
 client = ElevenLabs(api_key=elevenlabs_api_key)
 
 def generate_voice(text, lang="tr"):
-    """Generates speech from text using Google Text-to-Speech (gTTS)."""
+    """Generates speech using Google Text-to-Speech (gTTS) and returns audio bytes."""
     if not text.strip():
-        return None  # Prevent empty text issue
+        st.warning("⚠️ Text input is empty!")
+        return None
 
     try:
         tts = gTTS(text=text, lang=lang)  # Generate speech
         audio_buffer = io.BytesIO()  # Create in-memory buffer
         tts.save(audio_buffer)  # Save audio to buffer
-        return audio_buffer.getvalue()  # Return audio as bytes
+        audio_buffer.seek(0)  # Move to the start of the buffer
+        return audio_buffer.read()  # Read the entire buffer
     except Exception as e:
         st.error(f"⚠️ Error generating speech: {e}")
         return None
@@ -119,6 +121,7 @@ def play_audio(audio_data):
         st.warning("⚠️ No audio generated.")
         return
 
+    # Convert audio to Base64 for embedding in Streamlit
     b64 = base64.b64encode(audio_data).decode()
     md = f"""
     <audio controls>
@@ -157,6 +160,9 @@ if st.button("Cevap Al"):
             answer = query_rag(query)
             with st.spinner("🔊 Generating speech..."):
                 audio_data = generate_voice(answer)
-                play_audio(audio_data)
+                if audio_data:
+                    play_audio(audio_data)
+                else:
+                    st.error("❌ Failed to generate audio.")
             
 

@@ -96,7 +96,7 @@ def search_online(query):
 def search_online_cached(query):
     return search_online(query)
 
-client = Client(api_key=elevenlabs_api_key)
+client = ElevenLabs(api_key=elevenlabs_api_key)
 
 def generate_voice(text):
     """Generates speech from text using ElevenLabs API and returns audio bytes."""

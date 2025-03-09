@@ -117,6 +117,7 @@ def query_rag(query):
         st.write("Here")
         print("\n📡 Bilgi eksik! Web'den ek kaynaklar aranıyor...\n")
         web_results, references = search_online_cached(query)
+        st.write("There")
         print(web_results)
         print(references)
         return web_results, references

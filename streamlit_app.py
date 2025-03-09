@@ -31,8 +31,8 @@ text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
 
 
 ## Uplaod The Data
-scripts_dir = "https://api.github.com/repos/ardatscn/RAG-Leadership-Coach-Turkish/contents/video_scripts"     # Directory of the YouTube video scripts.
-response = requests.get(scripts_dir, auth=("ardatscn", "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"))
+scripts_dir = "https://raw.githubusercontent.com/ardatscn/RAG-Leadership-Coach-Turkish/refs/heads/main/video_scripts/Aclan%20Acar.txt"     # Directory of the YouTube video scripts.
+response = requests.get(scripts_dir)
 
 all_texts = []
 files = response.json() 

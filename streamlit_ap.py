@@ -113,14 +113,13 @@ def create_sound(text, lang="tr"):    # Generates the sound data
 
 def sound_on(audio_data):    # Plays the generated sound
     b64 = base64.b64encode(audio_data).decode()    # Needed for streanlit implementation 
-    autoplay_attr = "autoplay"
     md = f"""
-    <audio style="display:none;" {autoplay_attr}>
+    <audio style="display:none;" "autoplay">
         <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
     </audio>
     """
 
-    st.markdown(md, unsafe_allow_html=True)
+    st.markdown(md, unsafe_allow_html=True)    # Needed for sound to be displayed on Streamlit
     
 def RAG(query):
     response = chain.invoke({"input": query})

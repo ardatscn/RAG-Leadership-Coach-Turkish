@@ -80,29 +80,25 @@ chain = create_retrieval_chain(retriever, question_answer_chain)
 
 
 def search_online(query):
-    """Search DuckDuckGo and extract search results."""
-    base_url = "https://html.duckduckgo.com/html/"  # Use the HTML version for easier parsing
-    params = {"q": query}
+    search = DuckDuckGoSearchResults(output_format="list", max_results = 5)
+    search_results = search.invoke(query)
+    print(search_results)
+    
+    snippet_text = ""  # For concatenated snippets
+    link_text = ""     # For newline-separated links
+    
+    # Process each inner list
+    for item in search_results:
+        for text in item:
+            if text.startswith("snippet:"):
+                snippet_text += text.replace("snippet:", "").strip() + " "  # Concatenate
+            elif text.startswith("link:"):
+                link_text += text.replace("link:", "").strip() + "\n"  # Add newline
 
-    headers = {"User-Agent": "Mozilla/5.0"}  # Prevents request blocking
-
-    try:
-        response = requests.get(base_url, params=params, headers=headers)
-        response.raise_for_status()  # Raise an error for failed requests
-
-        soup = BeautifulSoup(response.text, "html.parser")
-
-        # Extract search result titles and links
-        results = []
-        for result in soup.find_all("a", class_="result__a"):  # DuckDuckGo's search result class
-            title = result.text
-            link = result["href"]
-            results.append((title, link))
-
-        return results if results else "No results found."
-
-    except requests.RequestException as e:
-        return f"Error fetching results: {e}"
+    # Remove extra spaces at the end of snippet_text
+    snippet_text = snippet_text.strip()
+    
+    return snippet_text, link_text
 
 def query_rag(query):
     response = chain.invoke({"input": query})
@@ -112,8 +108,7 @@ def query_rag(query):
     # Check if the answer contains "Üzgünüm, cevabı bulamadım..."
     if "Üzgünüm, cevabı bulamadım" in answer:
         print("\n📡 Bilgi eksik! Web'den ek kaynaklar aranıyor...\n")
-        web_results = search_online(query)
-        references = "Referans"
+        web_results, references = search_online(query)
         print(web_results)
         print(references)
         return web_results, references

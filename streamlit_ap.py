@@ -7,11 +7,12 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.chains import create_retrieval_chain
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_community.tools import DuckDuckGoSearchResults
 from elevenlabs.client import ElevenLabs
 from serpapi import GoogleSearch
 import requests
 import time
+from elevenlabs import generate, play
+import base64
 
 st.set_page_config(page_title="RAG Chatbot", page_icon="🤖", layout="centered")
 
@@ -119,6 +120,5 @@ if st.button("Cevap Al"):
     if query:
         with st.spinner("Cevap Bekleniyor.."):
             query_rag(query)
-            # st.success(answer)
-            # st.success(references)
+
 

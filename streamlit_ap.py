@@ -101,12 +101,30 @@ def search_online_cached(query):
 
 client = ElevenLabs(api_key=elevenlabs_api_key)
 
-def generate_voice(text):
-    engine = pyttsx3.init()
-    engine.save_to_file(text, "output.mp3")
-    engine.runAndWait()
-    with open("output.mp3", "rb") as f:
-        return f.read()
+def generate_voice(text, lang="tr"):
+    """Generates speech using Google Text-to-Speech (gTTS) and returns audio bytes."""
+    if not text.strip():
+        st.warning("⚠️ Text input is empty!")
+        return None
+
+    try:
+        tts = gTTS(text=text, lang=lang)  # Generate speech
+
+        # 🔹 Save to in-memory buffer
+        audio_buffer = io.BytesIO()
+        tts.save(audio_buffer)
+        audio_buffer.seek(0)  # Move to the start of the buffer
+        return audio_buffer.read()
+
+    except Exception as e:
+        st.error(f"❌ gTTS Error: {e}")
+        return None
+
+def play_audio(audio_data):
+    """Embeds an audio player in Streamlit."""
+    if not audio_data:
+        st.warning("⚠️ No audio generated.")
+        return
 
     # Convert audio to Base64 for embedding in Streamlit
     b64 = base64.b64encode(audio_data).decode()
@@ -116,7 +134,6 @@ def generate_voice(text):
     </audio>
     """
     st.markdown(md, unsafe_allow_html=True)
-
 
 def query_rag(query):
     response = chain.invoke({"input": query})
@@ -147,7 +164,7 @@ if st.button("Cevap Al"):
             answer = query_rag(query)
             with st.spinner("🔊 Generating speech..."):
                 audio_data = generate_voice(answer)
-                b64 = base64.b64encode(audio_data).decode()
-                st.markdown(f"<audio controls><source src='data:audio/mp3;base64,{b64}' type='audio/mp3'></audio>", unsafe_allow_html=True)
+                play_audio(audio_data)
+
             
 

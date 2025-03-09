@@ -11,7 +11,7 @@ from elevenlabs.client import ElevenLabs
 from serpapi import GoogleSearch
 import requests
 import time
-from elevenlabs import generate, play
+from elevenlabs import generate
 import base64
 
 st.set_page_config(page_title="RAG Chatbot", page_icon="🤖", layout="centered")
@@ -96,6 +96,21 @@ def search_online(query):
 def search_online_cached(query):
     return search_online(query)
 
+def generate_voice(text):
+    audio = generate(text=text, voice="Bella", model="eleven_multilingual_v2")
+    return audio
+
+# Function to play audio in Streamlit
+def play_audio(audio_data):
+    b64 = base64.b64encode(audio_data).decode()
+    md = f"""
+    <audio controls>
+        <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+    </audio>
+    """
+    st.markdown(md, unsafe_allow_html=True)
+
+
 def query_rag(query):
     response = chain.invoke({"input": query})
     answer = response["answer"]
@@ -116,9 +131,19 @@ st.title("Leadership Coach")
 st.write("Sorularınız 'Tecrübe Konuşuyor' YouTube Oynatım Listesinden Yanıtlanır.")
 query = st.text_input("Sorunuzu Sorun:", placeholder="Örnek: Liderlerin ortak özellikleri nelerdir?")
 
+if "voice_on" not in st.session_state:
+    st.session_state.voice_on = False
+
 if st.button("Cevap Al"):
     if query:
         with st.spinner("Cevap Bekleniyor.."):
             query_rag(query)
-
+            
+if st.button("🎙️ Toggle Voice"):
+    st.session_state.voice_on = not st.session_state.voice_on
+    
+if st.session_state.voice_on:
+    st.subheader("🔊 Voice Output:")
+    audio_data = generate_voice(text)
+    play_audio(audio_data)
 

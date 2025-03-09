@@ -9,4 +9,3 @@ streamlit
 duckduckgo_search==7.5.0
 google-search-results
 gtts
-pyttsx3

@@ -89,17 +89,17 @@ def search_online(query):
     
     snippet_text = ""  # For concatenated snippets
     link_text = ""     # For newline-separated links
-    
-    # Process each inner list
-    for item in search_results:
-        for text in item:
-            if text.startswith("snippet:"):
-                snippet_text += text.replace("snippet:", "").strip() + " "  # Concatenate
-            elif text.startswith("link:"):
-                link_text += text.replace("link:", "").strip() + "\n"  # Add newline
 
-    # Remove extra spaces at the end of snippet_text
-    snippet_text = snippet_text.strip()
+    for item in data:
+        parts = item.split(", link: ")  # Split at ", link: " to separate snippet and link
+        if len(parts) == 2:
+            snippet = parts[0].replace("snippet:", "").strip()  # Extract snippet
+            link = parts[1].strip()  # Extract link
+
+            snippet_text += snippet + " "  # Concatenate snippets
+            link_text += link + "\n"  # Newline-separated links
+
+    snippet_text = snippet_text.strip()  # Remove extra spaces
     
     return snippet_text, link_text
 

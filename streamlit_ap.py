@@ -91,6 +91,7 @@ def search_online(query):
     results = search.get_dict()
 
     search_results = results.get("organic_results", [])
+    st.write(search_results)
     return [(res["title"], res["link"]) for res in search_results[:5]]
     
 @st.cache_data

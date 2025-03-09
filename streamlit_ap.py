@@ -87,20 +87,17 @@ def search_online(query):
     snippet_text = ""  # For concatenated snippets
     link_text = ""     # For newline-separated links
     st.write(search_results)
-    # Process each inner list
-    for item in search_results:
-        st.write(item)
-        for text in item:
-            if text.startswith("snippet:"):
-                snippet_text += text.replace("snippet:", "").strip() + " "  # Concatenate
-            elif text.startswith("link:"):
-                link_text += text.replace("link:", "").strip() + "\n"  # Add newline
 
-    # Remove extra spaces at the end of snippet_text
-    snippet_text = snippet_text.strip()
-    
+    # Extract all snippets and links using regex
+    snippets = re.findall(r"snippet:\s*([^,]+)", full_text)
+    links = re.findall(r"link:\s*([^,]+)", full_text)
+
+    # Concatenate snippets and links
+    snippet_text = " ".join(snippets).strip()
+    link_text = "\n".join(links).strip()
+
     return snippet_text, link_text
-
+    
 @st.cache_data
 def search_online_cached(query):
     st.write("here 2")

@@ -13,6 +13,7 @@ import requests
 import time
 import base64
 import io
+from gtts import gTTS
 
 st.set_page_config(page_title="RAG Chatbot", page_icon="🤖", layout="centered")
 
@@ -98,20 +99,12 @@ def search_online_cached(query):
 
 client = ElevenLabs(api_key=elevenlabs_api_key)
 
-def generate_voice(text):
-    """Generates speech from text using ElevenLabs API and returns audio bytes."""
-    audio_stream = client.text_to_speech.convert_as_stream(
-        text=text,
-        voice_id="JBFqnCBsd6RMkjVDRZzb",
-        model_id="eleven_multilingual_v2"
-    )
-    
-    # ✅ Convert Generator to Bytes (Avoid Writing to Disk)
-    audio_bytes = b"".join(audio_stream)
+def generate_voice(text, lang="tr"):
+    tts = gTTS(text=text, lang=lang)
+    audio_buffer = io.BytesIO()
+    tts.save(audio_buffer)
+    return audio_buffer.getvalue()
 
-    return audio_bytes
-
-# 🔹 Function to Play Audio in Streamlit
 def play_audio(audio_data):
     """Embeds an audio player in Streamlit."""
     b64 = base64.b64encode(audio_data).decode()

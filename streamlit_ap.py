@@ -86,7 +86,7 @@ def search_online(query):
     link_text = ""     # For newline-separated links
     
     # Process each inner list
-    for item in data:
+    for item in search_results:
         for text in item:
             if text.startswith("snippet:"):
                 snippet_text += text.replace("snippet:", "").strip() + " "  # Concatenate

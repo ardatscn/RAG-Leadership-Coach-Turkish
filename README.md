@@ -28,4 +28,3 @@ framework. Its ease of implementation and efficiency made it a compelling choice
 
 [Demo Videosunu İzle](https://github.com/ardatscn/RAG-Leadership-Coach-Turkish/blob/main/demo.mkv)
 
-![0_WYv0_CaBmCTt7FXc](https://github.com/user-attachments/assets/08967cbd-c608-4578-97e5-abeeb348c88a)

@@ -81,7 +81,7 @@ def search_online(query):
     search = DuckDuckGoSearchResults(output_format="list", max_results = 5)
     search_results = search.invoke(query)
     print(search_results)
-    return search_results[0], search_results[0]
+    return search_results[0]['snippet'], search_results[0]['link']
 
 def query_rag(query):
     response = chain.invoke({"input": query})

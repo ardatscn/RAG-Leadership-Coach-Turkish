@@ -78,7 +78,7 @@ question_answer_chain = create_stuff_documents_chain(llm, prompt)
 chain = create_retrieval_chain(retriever, question_answer_chain)
 
 def search_online(query):
-    search = DuckDuckGoSearchResults(output_format="list")
+    search = DuckDuckGoSearchResults(output_format="list", max_results = 5)
     search_results = search.invoke(query)
     print(search_results)
     return search_results[2], search_results[2]

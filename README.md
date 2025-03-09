@@ -24,6 +24,6 @@ framework. Its ease of implementation and efficiency made it a compelling choice
 
   8- The Google Text-to-Speech (gTTS) library was used to convert the RAG model's outputs into speech.
 
-  9- The code was deployed on Streamlit and is accessible at: https://rag-leadership-coach-turkish.streamlit.app/"
+  9- The code was deployed on Streamlit and is accessible at: https://rag-leadership-coach-turkish1.streamlit.app/
 
 ![0_WYv0_CaBmCTt7FXc](https://github.com/user-attachments/assets/08967cbd-c608-4578-97e5-abeeb348c88a)

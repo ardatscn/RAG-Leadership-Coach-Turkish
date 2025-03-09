@@ -61,7 +61,7 @@ retriever = vector_store.as_retriever(search_type="similarity", search_kwargs={"
 system_prompt = (
     "Soruyu yanıtlamak için aşağıdaki talimatları kullanın. "
     "Yanıt Türkçe olmalıdır."
-    "Cevap sağlanan bağlamda yoksa, Üzgünüm cevap bulunamadı.. yanıtını verin. "
+    "Cevap sağlanan bağlamda yoksa, Üzgünüm, cevap bulunamadı.. yanıtını verin. "
     "Referans aldığın kaynağı cevabında belirtmelisin."
     "Bir koçmuş ve tavsiye veriyormuş gibi konuş."
     "Context: {context}"
@@ -100,7 +100,7 @@ def query_rag(query):
     answer = response["answer"]
     references = {doc.metadata["source"].replace(".txt", "") for doc in response["context"]}
 
-    if "Üzgünüm cevap bulunamadı" in answer:
+    if "Üzgünüm, cevap bulunamadı" in answer:
         st.subheader("Eksik Veri! İşte İnternette Bulunan Sonuçlar:")
         result = search_online_cached(query)
         for title, link, snippet in result:

@@ -92,7 +92,7 @@ def search_online(query):
 
     for item in search_results:
         parts = item.split(", link: ")  # Split at ", link: " to separate snippet and link
-        st.write("parts", parts)
+        st.write("item", item)
         if len(parts) == 2:
             snippet = parts[0].replace("snippet:", "").strip()  # Extract snippet
             st.write("snippet", snippet)

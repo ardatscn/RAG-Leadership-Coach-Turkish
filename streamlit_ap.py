@@ -9,6 +9,7 @@ from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.tools import DuckDuckGoSearchResults
 from elevenlabs.client import ElevenLabs
+from serpapi import GoogleSearch
 import requests
 import time
 

@@ -100,13 +100,25 @@ def search_online_cached(query):
 client = ElevenLabs(api_key=elevenlabs_api_key)
 
 def generate_voice(text, lang="tr"):
-    tts = gTTS(text=text, lang=lang)
-    audio_buffer = io.BytesIO()
-    tts.save(audio_buffer)
-    return audio_buffer.getvalue()
+    """Generates speech from text using Google Text-to-Speech (gTTS)."""
+    if not text.strip():
+        return None  # Prevent empty text issue
+
+    try:
+        tts = gTTS(text=text, lang=lang)  # Generate speech
+        audio_buffer = io.BytesIO()  # Create in-memory buffer
+        tts.save(audio_buffer)  # Save audio to buffer
+        return audio_buffer.getvalue()  # Return audio as bytes
+    except Exception as e:
+        st.error(f"⚠️ Error generating speech: {e}")
+        return None
 
 def play_audio(audio_data):
     """Embeds an audio player in Streamlit."""
+    if not audio_data:
+        st.warning("⚠️ No audio generated.")
+        return
+
     b64 = base64.b64encode(audio_data).decode()
     md = f"""
     <audio controls>

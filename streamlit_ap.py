@@ -138,7 +138,8 @@ def query_rag(query):
     else:
         st.success(answer)
         st.success(references)
-
+        return answer
+        
 st.title("Leadership Coach")
 st.write("Sorularınız 'Tecrübe Konuşuyor' YouTube Oynatım Listesinden Yanıtlanır.")
 query = st.text_input("Sorunuzu Sorun:", placeholder="Örnek: Liderlerin ortak özellikleri nelerdir?")
@@ -149,7 +150,7 @@ if st.button("Cevap Al"):
         with st.spinner("Cevap Bekleniyor.."):
             query_rag(query)
             with st.spinner("🔊 Generating speech..."):
-                audio_data = generate_voice(final_answer)
+                audio_data = generate_voice(answer)
                 play_audio(audio_data)
             
 

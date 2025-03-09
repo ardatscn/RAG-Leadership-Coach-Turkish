@@ -112,7 +112,7 @@ def query_rag(query):
 
         result = search_online_cached(query)
         # st.write("Debugging Output:", result)  # Streamlit Debug
-        for title, link in results:
+        for title, link in result:
             st.markdown(f"🔗 **[{title}]({link})**")
             
     else:
